@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <script src="src/lib/vue.min.js"></script>
+    <script src="src/lib/lodash.min.js"></script>
+
+    <script src="src/js/script.js"></script>
+
+    <link rel="stylesheet" href="src/css/styles.css">
+
+    <!-- Stylesheet de Vue Material -->
+    <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
+
+    <title>Gestionnaire restaurants VueJS</title>
+</head>
+
+<body>
+    <div id="app">
+        <form v-on:submit="ajouterRestaurant(event)">
+            <label>
+                Nom : <input name="nom" type="text" required v-model="nom">
+            </label>
+            <label>
+                Cuisine : <input name="cuisine" type="text" required v-model="cuisine">
+            </label>
+
+            <button>Ajouter</button>
+        </form>
+
+        <h1>Nombre de restaurants : {{nbRestaurantsTotal}}</h1>
+        <p> Nb pages totales : {{nbPagesTotal}}</p>
+
+        <button v-if="page !== 0 && restaurants !== 0" @click="pagePrecedente()">Précédent</button>
+        <button v-if="page === 0 || restaurants == 0" disabled>Précédent</button>
+
+        <label> Page {{page}} </label>
+
+        <button v-if="page >= 0 && page != nbPagesTotal && restaurants != 0" @click="pageSuivante()">Suivant</button>
+        <button v-if="page === nbPagesTotal || restaurants == 0" disabled>Suivant</button>
+
+        <br><br>
+
+        <div>
+            <input type="range" id="sliderPage" min="0" max="100" v-model="pagesize" step="5"
+                @input="getRestaurantsFromServer()"> {{pagesize}} restaurant(s) par page
+        </div>
+        
+        <br>
+
+        <input type="text" id="restaurantName" placeholder="Nom du restaurant" @input="getRestaurantByName()">
+        
+        <br><br>
+
+        <md-table>
+            <md-table-row>
+                <th>Nom</th>
+                <th>Cuisine </th>
+            </md-table-row>
+            <tbody>
+                <md-table-row v-for="r,index in restaurants" v-on:click="supprimerRestaurant(index)"
+                    v-bind:style="{backgroundColor:getColor(index)}">
+                    <td>{{r.name}}</td>
+                    <td> {{r.cuisine}}</td>
+                </md-table-row>
+            </tbody>
+        </md-table>
+    </div>
+</body>
+
+</html>

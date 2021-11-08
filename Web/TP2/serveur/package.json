@@ -1,0 +1,16 @@
+{
+  "name": "tp_routage_express_crud",
+  "version": "1.0.0",
+  "description": "",
+  "main": "serverCrud.js",
+  "scripts": {
+    "dev-server": "node serverCrudWithMongo.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^3.7.1",
+    "multer": "^1.4.3"
+  }
+}

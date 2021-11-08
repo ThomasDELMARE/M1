@@ -1,0 +1,26 @@
+table {
+    border: 1px solid black;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+tr,
+td {
+    border: 1px solid black;
+}
+
+td {
+    padding: 5px;
+}
+
+tr:hover {
+    background-color: yellow;
+}
+
+input:invalid {
+    background-color: pink;
+}
+
+input:valid {
+    background-color: lightGreen;
+}
