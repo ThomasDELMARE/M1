@@ -26,6 +26,14 @@ public class StaticUE {
         this.typeControle = typeControle;
         this.rattrapage = rattrapage;
     }
+
+    public static class affichageProf {
+        String nomProf = "Kawazi";
+        
+        public affichageProf(){
+            System.out.println(nomProf);
+        }
+    }
     
     // METHODES - IMPLEMENTATION STATIQUE
 
@@ -102,6 +110,10 @@ public class StaticUE {
         StaticUE.suppressionRattrapageSiQcm(listeModules);
 
         System.out.print("_________________\n\n");
+
+        // Utilisation statique
+        StaticUE baseClass = new StaticUE("Arabe", 1995, "Sorbonne",    "Dupont", TYPE_CONTROLE.QCM, true);
+        StaticUE.affichageProf subClass = new StaticUE.affichageProf();
     }
 
 }

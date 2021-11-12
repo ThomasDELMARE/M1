@@ -27,6 +27,13 @@ public class NonStaticUE {
         this.rattrapage = rattrapage;
     }
 
+    class affichageProf {
+        String nomProf = "Kawazi";
+        
+        public affichageProf(){
+            System.out.println(nomProf);
+        }
+    }
 
     // METHODES - IMPLANTATION NON-STATIQUE
 
@@ -103,5 +110,9 @@ public class NonStaticUE {
         module1.suppressionRattrapageSiQcm(listeModules);
 
         System.out.print("_________________\n\n");
+
+        // Utilisation non-statique
+        NonStaticUE baseClass = new NonStaticUE("Arabe", 1995, "Sorbonne",    "Dupont", TYPE_CONTROLE.QCM, true);
+        NonStaticUE.affichageProf subClass = baseClass.new affichageProf();
     }
 }
