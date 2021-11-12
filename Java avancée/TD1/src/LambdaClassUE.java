@@ -1,6 +1,6 @@
 import java.util.ArrayList;
 
-public class LocalClassUE {
+public class LambdaClassUE {
 
     // DECLARATION DES VARIABLES
 
@@ -18,7 +18,7 @@ public class LocalClassUE {
 
     // CONSTRUCTEUR
 
-    public LocalClassUE(String nomModule, int anneeCreation, String nomDiplome, String nomResponsable, TYPE_CONTROLE typeControle, boolean rattrapage) {
+    public LambdaClassUE(String nomModule, int anneeCreation, String nomDiplome, String nomResponsable, TYPE_CONTROLE typeControle, boolean rattrapage) {
         this.nomModule = nomModule;
         this.anneeCreation = anneeCreation;
         this.nomDiplome = nomDiplome;
@@ -27,7 +27,7 @@ public class LocalClassUE {
         this.rattrapage = rattrapage;
     }
 
-    private void afficherProf(LocalClassUE ue){
+    private void afficherProf(LambdaClassUE ue){
         
         class affichageProf {
             String nomProf = "Kawazi";
@@ -39,7 +39,7 @@ public class LocalClassUE {
 
     // METHODES - IMPLANTATION NON-STATIQUE
 
-    private void ajouterUneAnnee(ArrayList<LocalClassUE> arrayList) {
+    private void ajouterUneAnnee(ArrayList<LambdaClassUE> arrayList) {
         System.out.print("DEMARRAGE DE LA METHODE ajouterUneAnnee(ArrayList<UE> arrayList) \n\n\n");
 
         arrayList.forEach((module) -> {
@@ -49,7 +49,7 @@ public class LocalClassUE {
         });
     }
 
-    private void ajouterUneAnneeSiResponsableDupont(ArrayList<LocalClassUE> arrayList) {
+    private void ajouterUneAnneeSiResponsableDupont(ArrayList<LambdaClassUE> arrayList) {
         System.out.print("DEMARRAGE DE LA METHODE ajouterUneAnneeSiResponsableDupont(ArrayList<UE> arrayList) \n\n\n");
 
         arrayList.forEach((module) -> {
@@ -61,7 +61,7 @@ public class LocalClassUE {
         });
     }
     
-    private void suppressionRattrapageSiQcm(ArrayList<LocalClassUE> arrayList){
+    private void suppressionRattrapageSiQcm(ArrayList<LambdaClassUE> arrayList){
         System.out.print("DEMARRAGE DE LA METHODE suppressionRattrapageSiQcm(ArrayList<UE> arrayList) \n\n\n");
 
         arrayList.forEach((module) -> {
@@ -74,18 +74,18 @@ public class LocalClassUE {
 
 
     public static void main(String[] args) throws Exception {
-        ArrayList<LocalClassUE> listeModules = new ArrayList<LocalClassUE>();
+        ArrayList<LambdaClassUE> listeModules = new ArrayList<LambdaClassUE>();
 
-        LocalClassUE module1 = new LocalClassUE("Français", 1995, "Sorbonne", "Dupont", TYPE_CONTROLE.QCM, true);
-        LocalClassUE module2 = new LocalClassUE("Chimie", 1987, "Pierre Marie", "Kevin Tran", TYPE_CONTROLE.PROJET,false);
-        LocalClassUE module3 = new LocalClassUE("Maths", 1874, "MathSup", "Jean Louis", TYPE_CONTROLE.SYNTHESE,true);
-        LocalClassUE module4 = new LocalClassUE("EPS", 1574, "STAPS", "Zinedine Zidane", TYPE_CONTROLE.PROJET,true);
-        LocalClassUE module5 = new LocalClassUE("Physique", 1847, "Daltonia", "Ray Daltona", TYPE_CONTROLE.SYNTHESE,true);
-        LocalClassUE module6 = new LocalClassUE("PHilosophie", 1542, "Eureka", "Dupont", TYPE_CONTROLE.PROJET,false);
-        LocalClassUE module7 = new LocalClassUE("Technologie", 2014, "Musk Arena", "Massa Christophe", TYPE_CONTROLE.QCM, false);
-        LocalClassUE module8 = new LocalClassUE("Italien", 1423, "Pisa", "Barnini Angela", TYPE_CONTROLE.SYNTHESE,true);
-        LocalClassUE module9 = new LocalClassUE("Anglais", 1658, "Wall Street School", "Dupont", TYPE_CONTROLE.PROJET,false);
-        LocalClassUE module10 = new LocalClassUE("SVT", 1982, "L'école de la vie", "JCVD", TYPE_CONTROLE.QCM,true);
+        LambdaClassUE module1 = new LambdaClassUE("Français", 1995, "Sorbonne", "Dupont", TYPE_CONTROLE.QCM, true);
+        LambdaClassUE module2 = new LambdaClassUE("Chimie", 1987, "Pierre Marie", "Kevin Tran", TYPE_CONTROLE.PROJET,false);
+        LambdaClassUE module3 = new LambdaClassUE("Maths", 1874, "MathSup", "Jean Louis", TYPE_CONTROLE.SYNTHESE,true);
+        LambdaClassUE module4 = new LambdaClassUE("EPS", 1574, "STAPS", "Zinedine Zidane", TYPE_CONTROLE.PROJET,true);
+        LambdaClassUE module5 = new LambdaClassUE("Physique", 1847, "Daltonia", "Ray Daltona", TYPE_CONTROLE.SYNTHESE,true);
+        LambdaClassUE module6 = new LambdaClassUE("PHilosophie", 1542, "Eureka", "Dupont", TYPE_CONTROLE.PROJET,false);
+        LambdaClassUE module7 = new LambdaClassUE("Technologie", 2014, "Musk Arena", "Massa Christophe", TYPE_CONTROLE.QCM, false);
+        LambdaClassUE module8 = new LambdaClassUE("Italien", 1423, "Pisa", "Barnini Angela", TYPE_CONTROLE.SYNTHESE,true);
+        LambdaClassUE module9 = new LambdaClassUE("Anglais", 1658, "Wall Street School", "Dupont", TYPE_CONTROLE.PROJET,false);
+        LambdaClassUE module10 = new LambdaClassUE("SVT", 1982, "L'école de la vie", "JCVD", TYPE_CONTROLE.QCM,true);
 
         listeModules.add(module1);
         listeModules.add(module2);
@@ -113,8 +113,8 @@ public class LocalClassUE {
 
         System.out.print("_________________\n\n");
 
-        // Utilisation classe locale
-        LocalClassUE baseClass = new LocalClassUE("Arabe", 1995, "Sorbonne",    "Dupont", TYPE_CONTROLE.QCM, true);
-        baseClass.afficherProf(module1);
+        // Utilisation lambda
+        Runnable module11 = () -> { System.out.println("Utilisation d'une fonction lambda !"); } ;
+        module11.run();
     }
 }
