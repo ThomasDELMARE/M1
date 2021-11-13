@@ -112,7 +112,7 @@ public class NonStaticUE {
         System.out.print("_________________\n\n");
 
         // Utilisation non-statique
-        NonStaticUE baseClass = new NonStaticUE("Arabe", 1995, "Sorbonne",    "Dupont", TYPE_CONTROLE.QCM, true);
+        NonStaticUE baseClass = new NonStaticUE("Arabe", 1995, "Sorbonne", "Dupont", TYPE_CONTROLE.QCM, true);
         NonStaticUE.affichageProf subClass = baseClass.new affichageProf();
     }
 }
