@@ -6,6 +6,8 @@
  */
 
 import java.lang.reflect.*;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.io.*;
 
 public class AnalyseurDeClasse {
@@ -14,7 +16,12 @@ public class AnalyseurDeClasse {
     // Récupération d'un objet de type Class correspondant au nom passé en
     // paramétres
     Class cl = getClasse(nomClasse);
-    
+
+    afficherProprietesClasse(cl);
+
+  }
+
+  public static void afficherProprietesClasse(Class cl){
     afficheEnTeteClasse(cl);
 
     System.out.println();
@@ -39,9 +46,8 @@ public class AnalyseurDeClasse {
       Class c = Class.forName(nomClasse);
       System.out.println("Classe trouvée !");
       return c;
-    }
-    catch(ClassNotFoundException cnfe){
-      System.out.println("Classe pas trouvée : "+cnfe.getMessage());
+    } catch (ClassNotFoundException cnfe) {
+      System.out.println("Classe pas trouvée : " + cnfe.getMessage());
       return null;
     }
   }
@@ -56,27 +62,34 @@ public class AnalyseurDeClasse {
     String className = cl.getName();
     String temp = modifier + " class " + className;
     finalChar += temp;
-  
-    // CODE A ECRIRE
-
 
     // Récupération de la superclasse si elle existe (null si cl est le type Object)
     Class supercl = cl.getSuperclass();
+    Class[] interfaces = cl.getInterfaces();
 
-        // On ecrit le "extends " que si la superclasse est non nulle et différente de
-        // Object
-        if(supercl != null || supercl.getClass().getName() != "Object"){
-          
-        }
-        // CODE A ECRIRE
+    // On ecrit le "extends " que si la superclasse est non nulle et différente de
+    // Object
+    if (supercl != null && supercl.getClass().getName() != "Object") {
+      finalChar += " extends " + supercl.getName();
+    }
 
-        // Affichage des interfaces que la classe implemente
-        // CODE A ECRIRE
+    System.out.println(interfaces[0]);
 
-        // Accolade ouvrante de début de classe
-        System.out.print(" {\n");
+    if (interfaces.length > 0) {
+      finalChar += " implements ";
+    }
 
-      System.out.println(finalChar);
+    // Affichage des interfaces que la classe implemente
+    for (int i = 0; i < interfaces.length; i++) {
+      if (i - 1 != interfaces.length && i != 0) {
+        finalChar += ", ";
+      }
+      finalChar += interfaces[i];
+    }
+
+    // Accolade ouvrante de début de classe
+    System.out.println(finalChar);
+    System.out.print(" {\n");
   }
 
   /**
@@ -84,52 +97,99 @@ public class AnalyseurDeClasse {
    * avoir fait fonctionner le reste
    */
   public static void afficheInnerClasses(Class cl) {
-    // CODE A ECRIRE
+    Class[] classes = cl.getDeclaredClasses();
+
+    System.out.println("{\n");
+
+    if(classes.length == 0){
+      System.out.println("Pas d'inner classe trouvées");
+    }
+
+    for (int i = 0; i < classes.length; i++) {
+      System.out.println("Class = " + classes[i].getName());
+    }
+    System.out.println("}");
+
   }
 
   public static void afficheAttributs(Class cl) {
-    // CODE A ECRIRE
+    Field[] result = cl.getDeclaredFields();
+
+    System.out.println("{\n");
+
+    if(result.length == 0){
+      System.out.println("Pas d'attributs trouvés");
+    }
+
+
+    for (int i = 0; i < result.length; i++) {
+      System.out.println(result[i] + ";\n");
+    }
+
+    System.out.println("}");
   }
 
   public static void afficheConstructeurs(Class cl) {
-    // CODE A ECRIRE
-    System.out.println("{}");
+    Constructor[] result = cl.getConstructors();
+
+    System.out.println("{\n");
+
+    if(result.length == 0){
+      System.out.println("Pas de constructeurs trouvés");
+    }
+
+    for (int i = 0; i < result.length; i++) {
+      System.out.println(result[i] + ";\n");
+    }
+
+    System.out.println("}");
 
   }
 
   public static void afficheMethodes(Class cl) {
-    // CODE A ECRIRE
-    System.out.println("{}");
+    Method[] result = cl.getMethods();
+
+    System.out.println("{\n");
+
+    if(result.length == 0){
+      System.out.println("Pas de méthodes trouvées");
+    }
+
+    for (int i = 0; i < result.length; i++) {
+      System.out.println(result[i] + ";\n");
+    }
+
+    System.out.println("}");
   }
 
-  public static String getModifier(int modifierInt){
+  public static String getModifier(int modifierInt) {
     String result = "";
-    
-    if (Modifier.isPublic(modifierInt)){
+
+    if (Modifier.isPublic(modifierInt)) {
       result += " public";
-    }      
-    if (Modifier.isPrivate(modifierInt)){
+    }
+    if (Modifier.isPrivate(modifierInt)) {
       result += " private";
-    }     
-    if (Modifier.isProtected(modifierInt)){
+    }
+    if (Modifier.isProtected(modifierInt)) {
       result += " protected";
-    }   
-    if (Modifier.isStatic(modifierInt)){
+    }
+    if (Modifier.isStatic(modifierInt)) {
       result += " static";
-    }      
-    if (Modifier.isAbstract(modifierInt)){
+    }
+    if (Modifier.isAbstract(modifierInt)) {
       result += " abstract";
-    }    
+    }
     if (Modifier.isFinal(modifierInt)) {
       result += " final";
-    }       
-    if (Modifier.isNative(modifierInt)){
+    }
+    if (Modifier.isNative(modifierInt)) {
       result += " native";
-    }      
-    if (Modifier.isTransient(modifierInt)){
+    }
+    if (Modifier.isTransient(modifierInt)) {
       result += " transient";
-    }   
-    if (Modifier.isSynchronized(modifierInt)){
+    }
+    if (Modifier.isSynchronized(modifierInt)) {
       result += " synchronized";
     }
 
@@ -144,6 +204,24 @@ public class AnalyseurDeClasse {
   public static String litChaineAuClavier() throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     return br.readLine();
+  }
+
+  public void toString(Class cl) {
+    Class[] innerClasses = cl.getDeclaredClasses();
+    
+    for(int i = 0; i< innerClasses.length; i++) {
+      afficherProprietesClasse(innerClasses[i]);
+    }
+  }
+  
+  public void toString(Class cl, int profondeur) {
+    Class[] innerClasses = cl.getDeclaredClasses();
+    int classesRestantes = profondeur;
+    
+    while(classesRestantes < profondeur) {
+      afficherProprietesClasse(innerClasses[-1]);
+      classesRestantes -= 1;
+    }
   }
 
   public static void main(String[] args) {

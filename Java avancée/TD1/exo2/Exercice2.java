@@ -63,19 +63,19 @@ public class Exercice2 extends JDialog implements ActionListener {
 		// On ajoute les actions au bouton
 		boutonAjouterAnnee.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				modules.get(0).ajouterUneAnnee(modules, tableauAffichage);;
+				modules.get(0).ajouterUneAnnee(modules, tableauAffichage);
 			}
 		});
 
 		boutonAjouterUneAnneeSiDumont.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				modules.get(0).ajouterUneAnneeSiResponsableDupont(modules, tableauAffichage);;
+				modules.get(0).ajouterUneAnneeSiResponsableDupont(modules, tableauAffichage);
 			}
 		});
 
 		boutonSupprimerRattrapageSiQCM.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				modules.get(0).suppressionRattrapageSiQcm(modules, tableauAffichage);;
+				modules.get(0).suppressionRattrapageSiQcm(modules, tableauAffichage);
 			}
 		});
 

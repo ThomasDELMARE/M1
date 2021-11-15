@@ -96,7 +96,7 @@ public class AnonymClassUE {
         listeModules.add(module9);
         listeModules.add(module10);
 
-        COMMENCEMENT DE L INCREMENTATION DES ANNEES
+        // COMMENCEMENT DE L INCREMENTATION DES ANNEES
         module1.ajouterUneAnnee(listeModules);
 
         System.out.print("_________________\n\n");
