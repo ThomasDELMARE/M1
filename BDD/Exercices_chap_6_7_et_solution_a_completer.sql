@@ -22,6 +22,7 @@ variable salaire number;
 begin
 select sal INTO :salaire from pilote where pl#=1;
 end;
+/
 -- ? Quel est le salaire du pilote nr 1 ?
 
 print :salaire;
@@ -52,18 +53,23 @@ select pl#, sal from pilote where pl#=1;
 
 -- augmentation du salaire du pilote 1 de 200
 begin
-update pilote set sal=:salaire +100 where pl#=1;
+update pilote set sal=:salaire+100 where pl#=1;
 commit;
 end;
 /
 -- ? Quel est le nouveau salaire du pilote nr 1?
 select pl#, sal from pilote where pl#=1;
-?
+
+Reponse : 1 - 18609
 
 -- Comment résoudre ce problème
+-- Il faudrait mettre des lockers afin d'empêcher qu'une personne puisse modifier alors qu'une autre ne puisse pas.
+
 -- Oracle l'empêche t il ?
+-- Oracle ne l'empêche pas.
+
 -- D'autres SGBD ?
--- Comment corriger ?
+
 -- Réponse à donner dans 7.7.2.1
 
 -----------------------------------------------------------------------
@@ -85,14 +91,14 @@ select pl#, sal from pilote where pl#=1;
 -- consultation du salaire du pilote 1
 -- consultation du salaire du pilote 1
 select sal from pilote where pl#=1;
-?
-18109
+
+Reponse : 18609
+
 -- augmentation du salaire du pilote 1 de 300
 update pilote set sal=sal+300 where pl#=1;
 select sal from pilote where pl#=1;
-18409
 
-?
+Reponse : 18909
 
 
 -- Transaction T2 
@@ -100,9 +106,11 @@ select sal from pilote where pl#=1;
 --           conserve dans une variable locale
 
 SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED ;
-? 
+
 ERROR at line 1:
 ORA-02179: valid options: ISOLATION LEVEL { SERIALIZABLE | READ COMMITTED }
+
+-- Le SGBD retourn bien cette erreur, il faudrait qu'on précise l'une des deux solutions proposées ci-dessus afin que la requête marche.
 
 variable salaire number;
 begin
@@ -112,25 +120,33 @@ end;
 -- ? Quel est le salaire du pilote nr 1 ?
 
 print :salaire;
-180109
+
+Reponse : 18909
+
 -- Transaction T1
 -- annulation de T1
 -- Etape 3 : La transaction T1 annule (Rollback)
 
 ROLLBACK;
 select pl#, sal from pilote where pl#=1;
-?
-18109
+
+Reponse : 18609
 
 -- Transaction T2
 -- Etape 4 : La transaction T2 continue d'utiliser la variable locale
 print :salaire;
 -- 
-18109
+Reponse : 18909
 
 -- Oracle le permet t il ?
+
+-- Non, il ne permet pas de gére ce cas.
+
 -- D'autres SGBD le permettent t ils?
+
 -- Comment corriger ?
+-- Poser des locks afin d'utiliser correctement les variables.
+
 -- Réponse à donner dans 7.7.2.2
 
 
@@ -159,8 +175,8 @@ end;
 -- ? Quel est le salaire du pilote nr 1 ?
 
 print :salaire;
-18109
-?
+
+Reponse : 18609
 
 
 
@@ -169,13 +185,14 @@ print :salaire;
 --           valide (COMMIT)
 
 select pl#, sal from pilote where pl#=1;
-?
-18109
+
+Reponse : 1 - 18609
+
 update pilote set sal=sal+300 where pl#=1;
 select sal from pilote where pl#=1;
-18409
 commit;
 
+Reponse : 18909
 
 -- Transaction T1
 -- Etape 3 : La transaction T1 lit à nouveau la donnée D
@@ -189,13 +206,18 @@ end;
 -- ? Quel est le salaire du pilote nr 1 ?
 
 print :salaire2;
-18409
-?
 
+Reponse : 18909
 
 -- Oracle le permet t il ?
+-- Visiblement non
+
 -- D'autres SGBD le permettent t ils?
+--
+
 -- Comment corriger ?
+-- Il faudrait mettre un trigger ou prévenir l'utilisateur qu'une variable n'est plus à jour.
+
 -- Réponse à donner dans 7.7.2.3
 
 
@@ -219,6 +241,9 @@ print :salaire2;
 
 
 select pl#, sal from pilote where adr='Paris';
+
+Resultat : 
+
        PL#        SAL
 ---------- ----------
         10      15000
@@ -230,17 +255,16 @@ select pl#, sal from pilote where adr='Paris';
 
 6 rows selected.
 
-?
-
 
 
 -- Transaction T2 
 -- Etape 2 : La transaction T2 insère une nouvelle ligne dans la table T
 --           et valide (COMMIT)
 
-insert into  pilote values(24, 'Ngouabi', '13-MAY-1957', 'Paris', '000242232425',21000.6);
+insert into  pilote values(24, 'Ngouabi', '13-05-1957', 'Paris', '000242232425',21000.6);
 commit;
 
+Reponse : 1 ligne insérée
 
 -- Transaction T1
 -- Etape 3 : La transaction T1 lit à nouveau l'ensemble des lignes lues
@@ -249,7 +273,6 @@ commit;
 
 select pl#, sal from pilote where adr='Paris';
 
-?
        PL#        SAL
 ---------- ----------
         10      15000
@@ -264,8 +287,14 @@ select pl#, sal from pilote where adr='Paris';
 
 
 -- Oracle le permet t il ?
+-- Non, visiblement
+
 -- D'autres SGBD le permettent t ils?
+--
+
 -- Comment corriger ?
+-- Mettre des lockers sur les requêtes utilisées actuellement.
+
 -- Réponse à donner dans 7.7.2.3
 
 -------------------------------------------------------------------------
@@ -302,20 +331,26 @@ end;
 -- ? Quel est le salaire du pilote nr 1 ?
 
 print :salaire;
-?
 
+Reponse : 
+
+   SALAIRE
+----------
+     18909
 
 -- Transaction T2 
 -- Etape 2 : Puis une transaction T2 modififie cette donnée et la valide
 
 select pl#, sal from pilote where pl#=1;
-?
+
+Reponse : 1 - 18909
 
 -- augmentation du salaire du pilote 1 de 300
 update pilote set sal=sal+300 where pl#=1;
 commit;
 select pl#, sal from pilote where pl#=1;
-?
+
+Reponse : 1 - 19209
 
 -- Transaction T1
 -- Etape 3 : Puis T1 modifie cette donnée avec la donnée de l'étape 1
