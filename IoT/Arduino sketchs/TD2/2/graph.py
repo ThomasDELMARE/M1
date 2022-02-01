@@ -5,9 +5,9 @@ Run photoresitor sketch in same time !
 Author : G.MENEZ
 
 """
-import json
 import sys, serial
 import numpy as np
+import json
 from time import sleep
 from collections import deque
 from matplotlib import pyplot as plt
@@ -35,13 +35,14 @@ class AnalogData:
 
 class AnalogPlot:
     """ Plotting Figure """
-    def __init__(self, analogData):
+    def __init__(self, analogDataLight):
         plt.ion()                 # set plot to "animated"
-        # self.fig = plt.figure()
-        # self.ax = self.fig.add_subplot(111)
-        # self.axline, = self.ax.plot(analogData.x, analogData.y,
-        #                             'r.-', label="COM3")
-        
+        self.fig = plt.figure()
+        self.fig, (ax1, ax2) = plt.subplots(2, 1)
+        ax1.plot(analogDataLight.x, analogDataLight.y,
+                                    'r.-', label="Light")
+        ax2.plot(analogDataLight.x, analogDataLight.y,
+                                    'r.-', label="Light")                    
 
         plt.xlabel('sample idx')
         plt.ylabel('sample value (12 bits ?)')
@@ -51,26 +52,28 @@ class AnalogPlot:
         
     def updateplot(self, analogData):
         """  update plot """
-        self.axline.set_xdata(analogData.x)
-        self.axline.set_ydata(analogData.y)
+        
+        self.ax1.set_xdata(analogData.x)
+        self.ax2.set_ydata(analogData.y)
 
         self.fig.canvas.draw()
         self.fig.canvas.flush_events()
         #        self.ax.autoscale()
-        self.ax.relim()            # reset intern limits of the current axes
-        self.ax.autoscale_view()   # reset axes limits 
+        self.ax1.relim()            # reset intern limits of the current axes
+        self.ax1.autoscale_view()   # reset axes limits 
     
     def decoration(self, title):
         plt.title(title)
         plt.grid(True)
         plt.legend()
-        
+
+
 #----------------  Main function -----------------
 def main():
     # Ring buffer of last samples 
-    analogData = AnalogData()
-    # plotting canvas
-    analogPlot = AnalogPlot(analogData)    
+    # analogData = AnalogData()
+    # # plotting canvas
+    # analogPlot = AnalogPlot(analogData)    
     
     # open serial port
     ser = serial.Serial(
@@ -85,26 +88,18 @@ def main():
     counter=0
     while True:
         try:
-            # Read
-            v = ser.readline()
-            v = v.rstrip()
-            decodedString = v.decode('utf8')
-                 
-            if decodedString != "":
-                jsonArray = json.loads(decodedString)
-                temperature = jsonArray['temperature']
-                print("Temperature value : ", temperature)
+            # Read 
+            jsonSend = ser.readline()
+            tab = json.loads(jsonSend)
+            light = tab["light"]
+            print("Light value : ", light)
 
-                lumiere = jsonArray['luminosite'] 
-                redValue = jsonArray['redLed'] 
-                greenValue = jsonArray['greenLed'] 
-
-                # Plot
-                analogData.add(counter, lumiere)
-                analogPlot.updateplot(analogData)
-                print('plotting new data...')
-                
-        except KeyboardInterrupt or UnicodeDecodeError:
+            # Plot
+            # analogData.add(counter, light)
+            # analogPlot.updateplot(analogData)
+            # print('plotting new data...')
+            
+        except KeyboardInterrupt:
             print('exiting')
             break
         
