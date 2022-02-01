@@ -1,0 +1,9 @@
+11.2.9 Exercices
+
+Vous trouverez une implémentation d'une table de Hashage à l'adresse suivante : https://gitlab.com/fsgbd/hashtable-indexing
+
+Reprennez ce projet, implémentez une méthode de recherche en utilisant l'index
+- Vous vous baserez sur une recherche d'éléments aléatoires parmis le set de données de base
+- Vous devez construire des statistiques sur le timings de recherche via l'index (notez par exemple, le temps minimum pour trouver un élément, le temps maximum et la moyenne sur 100 recherches)
+- Faites varier la taille de base de l'index pour voir comment cette modification influe sur les temps de réponse
+- Tentez de proposer une "règle" quand à la taille idéale de la hashtable en fonction du nombre d'éléments que l'on souhaite indexer, si vous n'arrivez pas à généraliser, constatez à partir de vos tests empiriques

@@ -48,6 +48,7 @@ data0an1990 <- data1990[data1990[,"Age"]==0,]
 proba1899 <- round(((sum(data0an1899$Total)/sum(data1899$Total))*100),2)
 proba1990 <- round(((sum(data0an1990$Total)/sum(data1990$Total))*100),2)
 
+
 # Exercice 2
 
 # 1, 2, 3
