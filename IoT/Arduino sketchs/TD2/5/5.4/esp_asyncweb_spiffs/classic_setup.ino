@@ -44,10 +44,8 @@ void connect_wifi(){
  WiFi.disconnect();
  delay(100); // ms
 
- Serial.println(String("\nAttempting to connect to SSIDs : "));
- wifiMulti.addAP("HUAWEI-6EC2", "FGY9MLBL");
- wifiMulti.addAP("HUAWEI-553A", "QTM06RTT");
- wifiMulti.addAP("GMAP", "vijx47050");
+ // Serial.println(String("\nAttempting to connect to SSIDs : "));
+ wifiMulti.addAP("YAPADEWIFI", "Fromage2Chevre");
  while(wifiMulti.run() != WL_CONNECTED) {
    delay(1000);
    Serial.print(".");

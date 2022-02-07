@@ -79,13 +79,12 @@ void setup_http_server() {
     server.on("/temperature", HTTP_GET, [](AsyncWebServerRequest *request){
       /* The most simple route => hope a response with temperature value */ 
       request->send_P(200, "text/plain", get_temperature(TempSensor).c_str());
-    });
+    }); 
   
     server.on("/light", HTTP_GET, [](AsyncWebServerRequest *request){
       /* The most simple route => hope a response with light value */ 
       request->send_P(200, "text/plain", get_light(LightPin).c_str());
     });
-
   // This route allows users to change thresholds values through GET params
   server.on("/set", HTTP_GET, [](AsyncWebServerRequest *request){
     /* A route with a side effect : this get request has a param and should     
@@ -101,7 +100,7 @@ void setup_http_server() {
     /* A route receiving a POST request with Internet coordinates 
      *  of the reporting target host.
      */
-     Serial.println("Receive Request for a ""target"" route !"); 
+     // Serial.println("Receive Request for a ""target"" route !"); 
         if (request->hasArg("ip") &&
         request->hasArg("port") &&
         request->hasArg("sp")) {
@@ -151,6 +150,7 @@ void loop(){
   ArduinoOTA.handle();
   
   tempValue = atoi(get_temperature(TempSensor).c_str());
+  Serial.println(tempValue);
 
   // Use this new temp for regulation updating ?
 

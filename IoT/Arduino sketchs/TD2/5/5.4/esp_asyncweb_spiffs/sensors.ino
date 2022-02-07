@@ -16,7 +16,7 @@ String get_temperature(DallasTemperature tempSensor) {
   tempSensor.requestTemperaturesByIndex(0);
   t = tempSensor.getTempCByIndex(0);
   s = String(t);
-  Serial.println("Temperature : "+s+" C"); // for debug
+  // Serial.println("Temperature : "+s+" C"); // for debug
   return s;
 }
 /*--------------------------------*/
@@ -26,6 +26,6 @@ String get_light(int LightPin) {
   int sensorValue;
   sensorValue = analogRead(LightPin);
   String s = String(sensorValue);
-  Serial.println("Light : "+s+" Lum"); // for debug
+  // Serial.println("Light : "+s+" Lum"); // for debug
   return s;
 }
