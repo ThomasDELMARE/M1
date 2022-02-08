@@ -1,0 +1,19 @@
+Exercice 2.6.1 : Recherche les composants des SGBD suivants :
+MYSQL D’Oracle
+SQLSERVER de Microsoft
+Faire une bibliographie
+
+Exercice 2.6.2 : construire un dictionnaire de données
+Considérons le scripts airbase.sql
+Proposer des tables systèmes (votre dictionnaire) qui permettront de mémoriser les informations sur :
+Les tables
+Les colonnes
+Les contraintes d’intégrités
+Les colonnes ayant des contraintes
+Les indexes
+Les colonnes ayant des contraintes
+Faire des recherches dans votre dictionnaire
+Liste de vos tables, colonnes, contraintes etc.
+Liste de vos index
+Liste des colonnes, indexes, contraintes  d’une table
+…

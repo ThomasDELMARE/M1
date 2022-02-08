@@ -1,0 +1,11 @@
+Exercice 3.5.1 : travail de recherche sur les les différents types de fichiers des SGBD : MYSQL et SQLSERVER
+Identifier et décrire chaque type de fichier
+Faire une bibliographie
+
+Exercice 3.5.2 : travail de recherche sur les les différents types de fichiers des SGBD : MYSQL et SQLSERVER
+Décrire et dessiner comment ces SGDB gèrent les données d’une table
+Décrire et dessiner comment est organisé un block avec ces SGBD
+Faire une bibliographie
+
+Exercice 3.5.3 : Identifier les fichiers composant le SGBD Oracle (fichiers de Données, Redolog et de Contrôles)
+Via des requêtes SQL

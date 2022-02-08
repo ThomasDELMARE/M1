@@ -1,0 +1,10 @@
+Exercice 4.5.1 : travail de recherche sur les caches mémoires des SGBD : MYSQL et SQLSERVER
+Identifier et décrire comment ces SGBD gèrent la mémoire
+Faire une bibliographie
+
+Exercice 4.5.2 : Supposons que vous ayez une mémoire tampon ayant 4 Blocs
+Supposons une table avec 10 blocks contenant chacun une ligne
+Simuler la mise à de 6 lignes de cette table par une transaction T1. On suppose que la mémoire tampon est vide au départ
+Bien dessiner et décrire chaque étape
+
+Exercice 4.5.3 : Visualiser les zones mémoires du SGBD Oracle (SGA, PGA)
