@@ -73,6 +73,7 @@ void setup_http_server() {
   /* Sets up AsyncWebServer and routes */
   
   // Declaring root handler, and action to be taken when root is requested
+  // Sert à initialiser la page
     auto root_handler = server.on("/", HTTP_GET, [](AsyncWebServerRequest *request){
           /* This handler will download statut.html (SPIFFS file) and will send it back */
           request->send(SPIFFS, "/statut.html", String(), false, processor); 
@@ -85,6 +86,123 @@ void setup_http_server() {
       /* The most simple route => hope a response with temperature value */ 
       request->send_P(200, "text/plain", get_temperature(TempSensor).c_str());
     }); 
+
+    
+    server.on("/value", HTTP_GET, [](AsyncWebServerRequest *request){
+      /* The most simple route => hope a response with temperature value */ 
+       AsyncWebParameter* p = request->getParam(0);
+       String param = p-> name().c_str();
+              
+      // Temperature
+      if(param=="temperature"){
+        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
+        Serial.println(get_temperature(TempSensor).c_str());
+      }
+      
+      // Light
+      if(param=="light"){
+        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
+        Serial.println(get_temperature(TempSensor).c_str());
+      }
+      
+      // Cooler (led ou fan)
+      if(param=="cooler"){
+        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
+        Serial.println(get_temperature(TempSensor).c_str());
+      } 
+      
+      // Heater (led ou radiateur)
+      if(param=="heater"){
+        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
+        Serial.println(get_temperature(TempSensor).c_str());
+      }
+      
+      // Ip
+      if(param=="ip"){
+        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
+        Serial.println(get_temperature(TempSensor).c_str());
+      }
+      
+      // Port
+      if(param=="port"){
+        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
+        Serial.println(get_temperature(TempSensor).c_str());
+      }
+      
+      // Sp
+      if(param=="sp"){
+        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
+        Serial.println(get_temperature(TempSensor).c_str());
+      }
+      
+      // Light_threshold (seuil jour/nuit)
+      if(param=="lighthresold"){
+        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
+        Serial.println(get_temperature(TempSensor).c_str());
+      }
+      
+      // Sbn (seuil bas nuit)
+      if(param=="sbn"){
+        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
+        Serial.println(get_temperature(TempSensor).c_str());
+      }
+      
+      // Shn (seuil haut nuit)
+      if(param=="shn"){
+        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
+        Serial.println(get_temperature(TempSensor).c_str());
+      }
+      
+      // Sbj (seuil bas jour)
+      if(param=="sbj"){
+        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
+        Serial.println(get_temperature(TempSensor).c_str());
+      }
+      
+      // Shj (seuil haut jour)
+      if(param=="shj"){
+        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
+        Serial.println(get_temperature(TempSensor).c_str());
+      }
+      
+      // Uptime
+      if(param=="uptime"){
+        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
+        Serial.println(get_temperature(TempSensor).c_str());
+      }
+      
+      // SSID
+      if(param=="ssid"){
+        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
+        Serial.println(get_temperature(TempSensor).c_str());
+      }
+      
+      // Mac
+      if(param=="mac"){
+        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
+        Serial.println(get_temperature(TempSensor).c_str());
+      }
+      
+      // Ip_esp
+      if(param=="ipesp"){
+        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
+        Serial.println(get_temperature(TempSensor).c_str());
+      }
+      
+      // Uptime
+      if(param=="uptime"){
+        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
+        Serial.println(get_temperature(TempSensor).c_str());
+      }
+      
+      // Where
+      if(param=="where"){
+        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
+        Serial.println(get_temperature(TempSensor).c_str());
+      }
+    }); 
+  
+
   
     server.on("/light", HTTP_GET, [](AsyncWebServerRequest *request){
       /* The most simple route => hope a response with light value */ 
@@ -163,11 +281,61 @@ void setup(){
  
 void loop(){  
   int tempValue;
+  float t;
+  int sensorValue;
+  int jour;
+  int nightValue;
+  int dayValue;
+  sbn  = ;
+  shn  = ;
+  sbj  = ;
+  shj  = ;
+  dayValue = 
+  jour = 0;
+    
+  sensorValue = analogRead(A5);  
+  tempSensor.requestTemperaturesByIndex(0);
+  t=tempSensor.getTempCByIndex(0);
+  
+  // Determiner jour ou nuit
+  // Cas où c'est le jour
+  if(sensorValue > 2298){
+    jour = 1;  
+
+    if(t<23){
+      digitalWrite(ledPinRed, HIGH);
+      delay(1000);
+      digitalWrite(ledPinRed, LOW);
+      delay(1000);
+    }
+    else{
+      digitalWrite(ledPinGreen, HIGH);
+      delay(1000);
+      digitalWrite(ledPinGreen, LOW);
+      delay(1000);
+    }
+  }
+
+  // Cas où c'est la nuit
+  else{
+    if(t<18){
+      digitalWrite(ledPinRed, HIGH);
+      delay(1000);
+      digitalWrite(ledPinRed, LOW);
+      delay(1000);
+    }
+    else{
+      digitalWrite(ledPinGreen, HIGH);
+      delay(1000);
+      digitalWrite(ledPinGreen, LOW);
+      delay(1000);
+    }
+  }
   
   ArduinoOTA.handle();
   
   tempValue = atoi(get_temperature(TempSensor).c_str());
-  Serial.println(tempValue);
+  // Serial.println(tempValue);
 
   // Use this new temp for regulation updating ?
 

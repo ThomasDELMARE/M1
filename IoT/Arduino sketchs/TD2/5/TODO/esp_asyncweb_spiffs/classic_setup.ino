@@ -46,6 +46,7 @@ void connect_wifi(){
 
  // Serial.println(String("\nAttempting to connect to SSIDs : "));
  wifiMulti.addAP("YAPADEWIFI", "Fromage2Chevre");
+ wifiMulti.addAP("OnePlus de Thomas", "Fromage2Chevre");
  while(wifiMulti.run() != WL_CONNECTED) {
    delay(1000);
    Serial.print(".");

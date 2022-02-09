@@ -29,3 +29,11 @@ String get_light(int LightPin) {
   // Serial.println("Light : "+s+" Lum"); // for debug
   return s;
 }
+
+int getCooler(){
+  setup_led(21, 
+}
+
+int getHeater(){
+  
+}
