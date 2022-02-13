@@ -8,6 +8,7 @@
 */
 /*====== Import required libraries ===========*/
 #include <ArduinoOTA.h>
+#include <HTTPClient.h>
 #include "ArduinoJson.h"
 #include <WiFi.h>
 #include "ESPAsyncWebServer.h"
@@ -58,9 +59,9 @@ AsyncWebServer server(80);
 short int Light_threshold = 250; // Less => night, more => day
 
 // Host for periodic data report
-String target_ip = "";
+String target_ip = "127.0.0.1";
 int target_port = 1880;
-int target_sp = 0; // Remaining time before the ESP stops transmitting
+int target_sp = 2; // Remaining time before the ESP stops transmitting
 
 /*====== Some functions =====================*/
 
@@ -143,7 +144,6 @@ void setup_http_server() {
       request->send_P(200, "text/plain", get_temperature(TempSensor).c_str());
     }); 
 
-    
     server.on("/value", HTTP_GET, [](AsyncWebServerRequest *request){
       /* The most simple route => hope a response with temperature value */ 
        DynamicJsonDocument paramsJson(1024);
@@ -273,6 +273,7 @@ void setup_http_server() {
       /* The most simple route => hope a response with light value */ 
       request->send_P(200, "text/plain", get_light(LightPin).c_str());
     });
+    
   // This route allows users to change thresholds values through GET params
   server.on("/set", HTTP_GET, [](AsyncWebServerRequest *request){
     /* A route with a side effect : this get request has a param and should     
@@ -288,7 +289,7 @@ void setup_http_server() {
     /* A route receiving a POST request with Internet coordinates 
      *  of the reporting target host.
      */
-     // Serial.println("Receive Request for a ""target"" route !"); 
+     Serial.println("Receive Request for a ""target"" route !"); 
       
         if (request->hasArg("ip") &&
         request->hasArg("port") &&
@@ -304,14 +305,6 @@ void setup_http_server() {
             target_port = atoi(request->arg("port").c_str());
             target_sp = atoi(request->arg("sp").c_str());
             timerDelay = atoi(request->arg("sp").c_str());
-            
-            DynamicJsonDocument doc(1024);
-            doc["ip"] = request->arg("ip");
-            doc["port"] = String(request->arg("port"));
-            doc["sp"] = String(request->arg("sp"));
-
-            dataToSend = doc;
-            
         }
         request->send(SPIFFS, "/statut.html", String(), false, processor);
     });
@@ -325,14 +318,31 @@ void setup_http_server() {
   server.begin();
 }
 
+// DASHBOARD
 void startEspPost(DynamicJsonDocument dataToSend){
+  /*
   String adresseMac = return_wifi_status()["mac"];
+  String finalAdress = "/esp?mac=" + adresseMac;
+  Serial.println(finalAdress);
   String payload;
   serializeJson(dataToSend, payload);
+  Serial.println(payload);  
 
-  server.on(String("/esp?mac=" + adresseMac), HTTP_POST, [](AsyncWebServerRequest *request){
+  server.on("/esp", HTTP_POST, [payload](AsyncWebServerRequest *request){
       request->send(200, "applicaton/json", payload);
    });
+   */
+   HTTPClient http;
+   WiFiClient client;
+   
+   String server;
+   server = "http://" + target_ip + ":" + target_port + "/ui";
+   Serial.println(server);
+   http.begin(client, server);
+   http.addHeader("Content-Type", "application/json");
+   int httpResponseCode = http.POST("{\"ui\":\"ui\"}");
+   Serial.println(httpResponseCode);
+   http.end();
 }
 
 /*---- Arduino IDE paradigm : setup+loop -----*/
@@ -367,7 +377,7 @@ void loop(){
   
   tempValue = atoi(get_temperature(TempSensor).c_str());
 
-  if (lastTime != 0 && (millis() - lastTime) > timerDelay) {
+  if (target_sp != 0 && (millis() - lastTime) > timerDelay) {
     startEspPost(dataToSend);
   }
 
