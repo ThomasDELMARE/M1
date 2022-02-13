@@ -1,7 +1,6 @@
 #include <WiFi.h>
-
-
 #include <WiFiMulti.h>
+#include <ArduinoJson.h>
 
 WiFiMulti wifiMulti; // Creates an instance of the WiFiMulti class
 
@@ -35,6 +34,17 @@ void print_network_status(){ // Utilisation de String !
   // a mon avis bug ! => manque WiFi.encryptionType() !
   Serial.print(s);
 }
+
+DynamicJsonDocument return_wifi_status(){
+  DynamicJsonDocument doc(1024);
+
+  doc["ssid"] = String(WiFi.SSID());
+  doc["mac"] = WiFi.macAddress();
+  doc["ip"] = WiFi.localIP().toString();
+
+  return doc;
+}
+
 /*------------------------*/
 void connect_wifi(){
  //  Set WiFi to station mode 

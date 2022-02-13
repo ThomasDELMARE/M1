@@ -31,9 +31,11 @@ String get_light(int LightPin) {
 }
 
 int getCooler(){
-  setup_led(21, 
+   // Pin number 19
+   return digitalRead(19);
 }
 
 int getHeater(){
-  
+  // Pin number 21
+   return digitalRead(21);
 }

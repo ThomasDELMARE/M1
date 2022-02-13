@@ -17,6 +17,7 @@
 #include "DallasTemperature.h"
 #include "SPIFFS.h"
 #include <SimpleTimer.h>
+#include "uptime.h" 
 
 void setup_OTA(); // from ota.ino
 
@@ -30,14 +31,21 @@ OneWire oneWire(23); // Pour utiliser une entite oneWire sur le port 23
 DallasTemperature TempSensor(&oneWire) ; // Cette entite est utilisee par le capteur de temperature
 
 SimpleTimer timer;
-int timerId=0;
+int timerDelay = 0;
 int currentTimerValue=0;
+int lastTime = 0;
 
 /*====== ESP Statut =========================*/
 // Ces variables permettent d'avoir une representation
 // interne au programme du statut "electrique" de l'objet.
 // Car on ne peut pas "interroger" une GPIO pour lui demander !
 String LEDState = "off";
+int light_threshold; 
+int sbn  = 18;
+int shn  = 19;
+int sbj  = 23;
+int shj  = 24;
+DynamicJsonDocument dataToSend(1024);
 
 /*====== Process configuration ==============*/
 // Set timer 
@@ -66,6 +74,54 @@ String processor(const String& var){
   else if(var == "LIGHT"){
     return get_light(LightPin);
   }
+  else if(var == "LT"){
+    return String(light_threshold);
+  }
+  else if(var == "UPTIME"){
+    uptime::calculateUptime();
+    return String(uptime::getSeconds());
+  }
+  else if(var == "WHERE"){
+    return "43.599690; 7.091460";
+  }
+  else if(var == "SSID"){
+    return return_wifi_status()["ssid"];
+  }
+  else if(var == "MAC"){
+    return return_wifi_status()["mac"];
+  }
+  else if(var == "IP"){
+    return return_wifi_status()["ip"];
+  }
+  else if(var == "COOLER"){
+    if(getCooler() == 1){
+      return "HIGH";
+    }
+    else{
+      return "LOW";
+    }
+  }
+  else if(var == "HEATER"){
+    if(getHeater() == 1){
+      return "HIGH";
+    }
+    else{
+      return "LOW";
+    }  
+  }
+  else if(var== "SBJ"){
+    return String(sbj);
+  }
+  else if(var== "SHJ"){
+    return String(shj);
+  }
+  else if(var== "SBN"){
+    return String(sbn);
+  }
+  else if(var== "SHN"){
+    return String(shn);
+  }
+            
   return String();
 }
 
@@ -90,119 +146,128 @@ void setup_http_server() {
     
     server.on("/value", HTTP_GET, [](AsyncWebServerRequest *request){
       /* The most simple route => hope a response with temperature value */ 
-       AsyncWebParameter* p = request->getParam(0);
-       String param = p-> name().c_str();
-              
-      // Temperature
-      if(param=="temperature"){
-        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
-        Serial.println(get_temperature(TempSensor).c_str());
-      }
-      
-      // Light
-      if(param=="light"){
-        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
-        Serial.println(get_temperature(TempSensor).c_str());
-      }
-      
-      // Cooler (led ou fan)
-      if(param=="cooler"){
-        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
-        Serial.println(get_temperature(TempSensor).c_str());
-      } 
-      
-      // Heater (led ou radiateur)
-      if(param=="heater"){
-        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
-        Serial.println(get_temperature(TempSensor).c_str());
-      }
-      
-      // Ip
-      if(param=="ip"){
-        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
-        Serial.println(get_temperature(TempSensor).c_str());
-      }
-      
-      // Port
-      if(param=="port"){
-        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
-        Serial.println(get_temperature(TempSensor).c_str());
-      }
-      
-      // Sp
-      if(param=="sp"){
-        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
-        Serial.println(get_temperature(TempSensor).c_str());
-      }
-      
-      // Light_threshold (seuil jour/nuit)
-      if(param=="lighthresold"){
-        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
-        Serial.println(get_temperature(TempSensor).c_str());
-      }
-      
-      // Sbn (seuil bas nuit)
-      if(param=="sbn"){
-        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
-        Serial.println(get_temperature(TempSensor).c_str());
-      }
-      
-      // Shn (seuil haut nuit)
-      if(param=="shn"){
-        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
-        Serial.println(get_temperature(TempSensor).c_str());
-      }
-      
-      // Sbj (seuil bas jour)
-      if(param=="sbj"){
-        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
-        Serial.println(get_temperature(TempSensor).c_str());
-      }
-      
-      // Shj (seuil haut jour)
-      if(param=="shj"){
-        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
-        Serial.println(get_temperature(TempSensor).c_str());
-      }
-      
-      // Uptime
-      if(param=="uptime"){
-        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
-        Serial.println(get_temperature(TempSensor).c_str());
-      }
-      
-      // SSID
-      if(param=="ssid"){
-        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
-        Serial.println(get_temperature(TempSensor).c_str());
-      }
-      
-      // Mac
-      if(param=="mac"){
-        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
-        Serial.println(get_temperature(TempSensor).c_str());
-      }
-      
-      // Ip_esp
-      if(param=="ipesp"){
-        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
-        Serial.println(get_temperature(TempSensor).c_str());
-      }
-      
-      // Uptime
-      if(param=="uptime"){
-        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
-        Serial.println(get_temperature(TempSensor).c_str());
-      }
-      
-      // Where
-      if(param=="where"){
-        request->send_P(200, "text/plain", get_temperature(TempSensor).c_str()); 
-        Serial.println(get_temperature(TempSensor).c_str());
-      }
-    }); 
-  
+       DynamicJsonDocument paramsJson(1024);
+       
+       int params = request->params();
+       Serial.println(params);
+        
+      if(params>0){
+       for(int i=0;i<params;i++){
+        AsyncWebParameter* param = request->getParam(i);
+        String paramName = param->name().c_str();
+        
+        // Temperature
+        if(paramName=="temperature"){
+          paramsJson["temperature"] = get_temperature(TempSensor);
+        }
+        
+        // Light
+        if(paramName=="light"){
+          paramsJson["light"] = get_light(LightPin);
+        }
+        
+        // Cooler (led ou fan)
+        if(paramName=="cooler"){
+          if(getCooler() == 1){
+            paramsJson["cooler"] = "HIGH";
+          }
+          else{
+            paramsJson["cooler"] = "LOW";
+          }
+        } 
+        
+        // Heater (led ou radiateur)
+        if(paramName=="heater"){
+          if(getHeater() == 1){
+            paramsJson["heater"] = "HIGH";
+          }
+          else{
+            paramsJson["heater"] = "HIGH";
+          } 
+        }
+        
+        // Ip
+        if(paramName=="ip"){
+          // TODO : Right ? 
+          paramsJson["ip"] = return_wifi_status()["ip"];
+        }
+        
+        // Port
+        if(paramName=="port"){
+          paramsJson["port"] = dataToSend["port"]; 
+        }
+        
+        // Sp
+        if(paramName=="sp"){
+          paramsJson["sp"] = dataToSend["sp"]; 
+        }
+        
+        // Light_threshold (seuil jour/nuit)
+        if(paramName=="lighthresold"){
+          paramsJson["lighthresold"] = String(light_threshold);
+        }
+        
+        // Sbn (seuil bas nuit)
+        if(paramName=="sbn"){
+          paramsJson["sbn"] = String(sbn); 
+        }
+        
+        // Shn (seuil haut nuit)
+        if(paramName=="shn"){
+          paramsJson["shn"] = String(shn);  
+        }
+        
+        // Sbj (seuil bas jour)
+        if(paramName=="sbj"){
+          paramsJson["sbj"] = String(sbj);  
+        }
+        
+        // Shj (seuil haut jour)
+        if(paramName=="shj"){
+          paramsJson["shj"] = String(shj); 
+        }
+        
+        // Uptime
+        if(paramName=="uptime"){
+          uptime::calculateUptime();
+          paramsJson["uptime"] = String(uptime::getSeconds());
+        }
+        
+        // SSID
+        if(paramName=="ssid"){
+          paramsJson["ssid"] = return_wifi_status()["ssid"];
+        }
+        
+        // Mac
+        if(paramName=="mac"){
+          paramsJson["mac"] = return_wifi_status()["mac"];
+        }
+        
+        // Ip_esp
+        if(paramName=="ipesp"){
+          paramsJson["ipesp"] = return_wifi_status()["ip"];
+        }
+        
+        // Where
+        if(paramName=="where"){
+          paramsJson["where"] = "43.599690; 7.091460";
+        }
+       }
 
+       String payload;
+       serializeJson(paramsJson, payload);
+       Serial.println(payload);
+
+       // Send the final request with the JSON
+       request->send(200, "application/json", payload);
+       }
+
+       else{
+        server.onNotFound([](AsyncWebServerRequest *request){
+                   request->send(404);
+                   });
+       }
+    }); 
   
     server.on("/light", HTTP_GET, [](AsyncWebServerRequest *request){
       /* The most simple route => hope a response with light value */ 
@@ -224,20 +289,29 @@ void setup_http_server() {
      *  of the reporting target host.
      */
      // Serial.println("Receive Request for a ""target"" route !"); 
+      
         if (request->hasArg("ip") &&
         request->hasArg("port") &&
+        request->arg("port")!=""&&
+        request->arg("port")!= NULL &&
         request->hasArg("sp")&&
+        request->arg("sp")!=""&&
+        request->arg("sp")!=NULL&&
         request->arg("ip")!=""&&
         request->arg("ip")!=NULL
         ) {
             target_ip = request->arg("ip");
             target_port = atoi(request->arg("port").c_str());
             target_sp = atoi(request->arg("sp").c_str());
+            timerDelay = atoi(request->arg("sp").c_str());
             
-            if(currentTimerValue != target_sp){
-              timer.disable(timerId);
-              timerId = timer.setInterval(target_sp, startEspPost);
-            }
+            DynamicJsonDocument doc(1024);
+            doc["ip"] = request->arg("ip");
+            doc["port"] = String(request->arg("port"));
+            doc["sp"] = String(request->arg("sp"));
+
+            dataToSend = doc;
+            
         }
         request->send(SPIFFS, "/statut.html", String(), false, processor);
     });
@@ -251,8 +325,14 @@ void setup_http_server() {
   server.begin();
 }
 
-int startEspPost(){
-  return 1;
+void startEspPost(DynamicJsonDocument dataToSend){
+  String adresseMac = return_wifi_status()["mac"];
+  String payload;
+  serializeJson(dataToSend, payload);
+
+  server.on(String("/esp?mac=" + adresseMac), HTTP_POST, [](AsyncWebServerRequest *request){
+      request->send(200, "applicaton/json", payload);
+   });
 }
 
 /*---- Arduino IDE paradigm : setup+loop -----*/
@@ -281,64 +361,19 @@ void setup(){
  
 void loop(){  
   int tempValue;
-  float t;
-  int sensorValue;
-  int jour;
-  int nightValue;
-  int dayValue;
-  sbn  = ;
-  shn  = ;
-  sbj  = ;
-  shj  = ;
-  dayValue = 
-  jour = 0;
-    
-  sensorValue = analogRead(A5);  
-  tempSensor.requestTemperaturesByIndex(0);
-  t=tempSensor.getTempCByIndex(0);
-  
-  // Determiner jour ou nuit
-  // Cas où c'est le jour
-  if(sensorValue > 2298){
-    jour = 1;  
-
-    if(t<23){
-      digitalWrite(ledPinRed, HIGH);
-      delay(1000);
-      digitalWrite(ledPinRed, LOW);
-      delay(1000);
-    }
-    else{
-      digitalWrite(ledPinGreen, HIGH);
-      delay(1000);
-      digitalWrite(ledPinGreen, LOW);
-      delay(1000);
-    }
-  }
-
-  // Cas où c'est la nuit
-  else{
-    if(t<18){
-      digitalWrite(ledPinRed, HIGH);
-      delay(1000);
-      digitalWrite(ledPinRed, LOW);
-      delay(1000);
-    }
-    else{
-      digitalWrite(ledPinGreen, HIGH);
-      delay(1000);
-      digitalWrite(ledPinGreen, LOW);
-      delay(1000);
-    }
-  }
+  light_threshold = 2298;
   
   ArduinoOTA.handle();
   
   tempValue = atoi(get_temperature(TempSensor).c_str());
+
+  if (lastTime != 0 && (millis() - lastTime) > timerDelay) {
+    startEspPost(dataToSend);
+  }
+
+  lastTime = millis();
+  
   // Serial.println(tempValue);
 
-  // Use this new temp for regulation updating ?
-
-  
   delay(1000);
 }

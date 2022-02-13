@@ -25,6 +25,7 @@ void loop() {
   sensorValue = analogRead(A5);  
   tempSensor.requestTemperaturesByIndex(0);
   t=tempSensor.getTempCByIndex(0);
+  Serial.println(t);
   
   // Determiner jour ou nuit
   // Cas où c'est le jour

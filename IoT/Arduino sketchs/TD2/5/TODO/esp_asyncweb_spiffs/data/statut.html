@@ -57,17 +57,13 @@
 <body>
     <h1>ESP32</h1>
     <h3>Object status :</h3>
-    Uptime : %UPTIME% s<br/> Where : %WHERE% s<br/>
+    Uptime : %UPTIME% s<br/> Where : %WHERE% <br/>
 
     <h3>Network link status :</h3>
     WiFi SSID : %SSID%<br/> MAC address : %MAC%<br/> IP address : %IP%<br/>
 
     <h3>Sensors status :</h3>
-
-    <h4 style="font-weight:normal" id="temperatureSensorsStatus"> Temperature : %TEMPERATURE% C </h4>
-    <h4 style="font-weight:normal" id="lightSensorsStatus">Light : %LIGHT% Lumen</h4>
-    <h4 style="font-weight:normal" id="coolerSensorsStatus">Cooler : %COOLER%</h4>
-    <h4 style="font-weight:normal" id="heaterSensorsStatus">Heater : %HEATER%</h4>
+    Temperature : %TEMPERATURE% C<br/> Light : %LIGHT% Lumen<br/> Cooler : %COOLER%<br/> Heater : %HEATER%<br/>
 
     <h3>Sensors status WITH GLYPHS :</h3>
     <div class="grid-container">
@@ -122,7 +118,7 @@
     </script>
 
     <h3>Thresholds :</h3>
-    Day/Night Light : %LT% Lumen<br/> Day - Low Temp : %SBJ% C<br/> Day - High Temp : %SHJ% C<br/> Night - Low Temp : %SBN% C<br/> Night - Low Temp : %SHN% C<br/>
+    Day/Night Light : %LT% Lumen<br/> Day - Low Temp : %SBJ% C<br/> Day - High Temp : %SHJ% C<br/> Night - Low Temp : %SBN% C<br/> Night - High Temp : %SHN% C<br/>
 
     <h3> Periodic sensor data sent to :</h3>
     <form action="/target" method="post">
