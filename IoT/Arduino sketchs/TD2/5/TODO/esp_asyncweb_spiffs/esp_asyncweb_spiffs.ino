@@ -336,11 +336,11 @@ void startEspPost(DynamicJsonDocument dataToSend){
    WiFiClient client;
    
    String server;
-   server = "http://" + target_ip + ":" + target_port + "/ui";
+   server = "http://" + target_ip + ":" + target_port + "/jauge ";
    Serial.println(server);
    http.begin(client, server);
    http.addHeader("Content-Type", "application/json");
-   int httpResponseCode = http.POST("{\"ui\":\"ui\"}");
+   int httpResponseCode = http.POST("{\"temperature\":\"" + get_temperature(TempSensor)+"\"}");
    Serial.println(httpResponseCode);
    http.end();
 }
