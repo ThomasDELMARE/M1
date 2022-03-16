@@ -17,8 +17,6 @@
 #include "OneWire.h"
 #include "DallasTemperature.h"
 #include "SPIFFS.h"
-#include <SimpleTimer.h>
-#include "uptime.h" 
 
 void setup_OTA(); // from ota.ino
 
@@ -31,7 +29,6 @@ const int LightPin = A5; // Read analog input on ADC1_CHANNEL_5 (GPIO 33)
 OneWire oneWire(23); // Pour utiliser une entite oneWire sur le port 23
 DallasTemperature TempSensor(&oneWire) ; // Cette entite est utilisee par le capteur de temperature
 
-SimpleTimer timer;
 int timerDelay = 0;
 int currentTimerValue=0;
 int lastTime = 0;
@@ -320,7 +317,7 @@ void setup_http_server() {
 
 // DASHBOARD
 void startEspPost(DynamicJsonDocument dataToSend){
-  /*
+  
   String adresseMac = return_wifi_status()["mac"];
   String finalAdress = "/esp?mac=" + adresseMac;
   Serial.println(finalAdress);
@@ -331,7 +328,7 @@ void startEspPost(DynamicJsonDocument dataToSend){
   server.on("/esp", HTTP_POST, [payload](AsyncWebServerRequest *request){
       request->send(200, "applicaton/json", payload);
    });
-   */
+  
    HTTPClient http;
    WiFiClient client;
    
@@ -379,9 +376,8 @@ void loop(){
 
   if (target_sp != 0 && (millis() - lastTime) > timerDelay) {
     startEspPost(dataToSend);
+    lastTime = millis();
   }
-
-  lastTime = millis();
   
   // Serial.println(tempValue);
 

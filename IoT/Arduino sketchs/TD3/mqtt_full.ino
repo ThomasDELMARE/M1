@@ -10,11 +10,12 @@
 #include "OneWire.h"
 #include "DallasTemperature.h"
 
+
 /*===== MQTT broker/server ========*/
-//const char* mqtt_server = "127.0.0.1"; 
+const char* mqtt_server = "192.168.1.101"; 
 //const char* mqtt_server = "public.cloud.shiftr.io"; // Failed in 2021
 // need login and passwd (public,public) mqtt://public:public@public.cloud.shiftr.io
-const char* mqtt_server = "broker.hivemq.com"; // anynomous Ok in 2021 
+//const char* mqtt_server = "broker.hivemq.com"; // anynomous Ok in 2021 
 //const char* mqtt_server = "test.mosquitto.org"; // anynomous Ok in 2021
 //const char* mqtt_server = "mqtt.eclipseprojects.io"; // anynomous Ok in 2021
 
