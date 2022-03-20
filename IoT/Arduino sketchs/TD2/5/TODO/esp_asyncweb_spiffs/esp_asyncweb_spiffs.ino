@@ -17,6 +17,8 @@
 #include "OneWire.h"
 #include "DallasTemperature.h"
 #include "SPIFFS.h"
+//#include <SimpleTimer.h>
+#include "uptime.h" 
 
 void setup_OTA(); // from ota.ino
 
@@ -29,7 +31,8 @@ const int LightPin = A5; // Read analog input on ADC1_CHANNEL_5 (GPIO 33)
 OneWire oneWire(23); // Pour utiliser une entite oneWire sur le port 23
 DallasTemperature TempSensor(&oneWire) ; // Cette entite est utilisee par le capteur de temperature
 
-int timerDelay = 0;
+//SimpleTimer timer;
+int timerDelay = 2000;
 int currentTimerValue=0;
 int lastTime = 0;
 
@@ -56,7 +59,7 @@ AsyncWebServer server(80);
 short int Light_threshold = 250; // Less => night, more => day
 
 // Host for periodic data report
-String target_ip = "127.0.0.1";
+String target_ip = "192.168.166.158"; // Pour essayer sans avoir a remplir le formulaire
 int target_port = 1880;
 int target_sp = 2; // Remaining time before the ESP stops transmitting
 
@@ -138,7 +141,10 @@ void setup_http_server() {
       
     server.on("/temperature", HTTP_GET, [](AsyncWebServerRequest *request){
       /* The most simple route => hope a response with temperature value */ 
-      request->send_P(200, "text/plain", get_temperature(TempSensor).c_str());
+      char tmp[20];
+      int last_temp = atoi(get_temperature(TempSensor).c_str());
+      dtostrf(last_temp,10,2, tmp); //https://arduino.stackexchange.com/questions/16933/read-sensor-and-convert-reading-to-const-char
+      request->send_P(200, "text/plain", tmp); //Surtout pas => get_temperature(tempSensor).c_str());
     }); 
 
     server.on("/value", HTTP_GET, [](AsyncWebServerRequest *request){
@@ -179,7 +185,7 @@ void setup_http_server() {
             paramsJson["heater"] = "HIGH";
           }
           else{
-            paramsJson["heater"] = "HIGH";
+            paramsJson["heater"] = "LOW";
           } 
         }
         
@@ -317,7 +323,7 @@ void setup_http_server() {
 
 // DASHBOARD
 void startEspPost(DynamicJsonDocument dataToSend){
-  
+  /*
   String adresseMac = return_wifi_status()["mac"];
   String finalAdress = "/esp?mac=" + adresseMac;
   Serial.println(finalAdress);
@@ -328,7 +334,7 @@ void startEspPost(DynamicJsonDocument dataToSend){
   server.on("/esp", HTTP_POST, [payload](AsyncWebServerRequest *request){
       request->send(200, "applicaton/json", payload);
    });
-  
+   */
    HTTPClient http;
    WiFiClient client;
    
@@ -376,8 +382,9 @@ void loop(){
 
   if (target_sp != 0 && (millis() - lastTime) > timerDelay) {
     startEspPost(dataToSend);
-    lastTime = millis();
-  }
+ 
+  lastTime = millis();
+ }
   
   // Serial.println(tempValue);
 
