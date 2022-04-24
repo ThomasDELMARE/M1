@@ -78,7 +78,7 @@ String processor(const String& var){
   if(var == "TEMPERATURE"){
     return get_temperature(TempSensor);
   }
-else if(var == "LIGHT"){
+  else if(var == "LIGHT"){
     return get_light(LightPin);
   }
   else if(var == "LT"){
@@ -132,13 +132,12 @@ else if(var == "LIGHT"){
     return target_ip;
   }
   else if(var=="PRT_PORT"){
-    return String(target_port);
+    return target_port;
   }
   else if(var=="PRT_T"){
     return String(target_sp);
   }
-  
-  return String("Test");
+  return String();
 }
 
 void setup_http_server() {

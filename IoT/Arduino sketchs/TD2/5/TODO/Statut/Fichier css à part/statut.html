@@ -4,12 +4,72 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css"
+        integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>ESP32</title>
 </head>
 
 <body>
+    <!-- <h1>ESP32</h1>
+    <h3>Object status :</h3>
+    Uptime      : %UPTIME% s<br/>
+    Where       : %WHERE% s<br/>
+
+    <h3>Network link status :</h3>
+    WiFi SSID   : %SSID%<br/>
+    MAC address : %MAC%<br/>
+    IP address  : %IP%<br/>
+
+    <h3>Sensors status :</h3>
+    Temperature : %TEMPERATURE% C<br/>
+    Light       : %LIGHT% Lumen<br/>
+    Cooler      : %COOLER%<br/>
+    Heater      : %HEATER%<br/>
+
+    <h3>Sensors status WITH GLYPHS :</h3>
+    <div class="grid-container">
+      <div class="grid-item">
+	<i class="fas fa-thermometer-half" style="color:#059e8a;"></i>
+      </div>
+      <div class="grid-item">      
+	<span class="sensors-labels">Temperature</span> 
+	<span id="temperature">%TEMPERATURE%</span>
+	<sup class="units">&deg;C</sup>
+      </div>
+      <div class="grid-item">
+	<i class="far fa-lightbulb" style="color:#00add6;"></i>
+      </div>
+      <div class="grid-item">
+	<span class="sensors-labels">Light</span>
+	<span id="light">%LIGHT%</span>
+	<sup class="units">Lumen</sup>
+      </div>
+    </div>
+
+    <h3>Thresholds :</h3>
+    Day/Night Light   : %LT% Lumen<br/>
+    Day   - Low Temp  : %SBJ% C<br/>
+    Day   - High Temp : %SHJ% C<br/>
+    Night - Low Temp  : %SBN% C<br/>
+    Night - Low Temp  : %SHN% C<br/>
+
+    <h3> Periodic sensor data sent to :</h3>
+    <form action="/target" method="post">
+
+      <label for="ip">IP Address :</label>
+      <input type="text" name="ip" placeholder="%PRT_IP%"/><br/>
+
+      <label for="port">Port :</label>
+      <input type="text" name="port" placeholder="%PRT_PORT%"/><br/>
+
+      <label for="sp"> Sampling Period (in seconds) :</label>
+      <input type="text" name="sp" placeholder="%PRT_T%"/><br/>
+      
+      <input type="submit" value="Change reporting host !"/>
+    </form> -->
+
     <div class="main-container">
         <div class="background-image"></div>
         <div class="panel-container">
@@ -23,22 +83,22 @@
             <div class="panel-data-container">
                 <div class="value-container lighting">
                     <i class="fa fa-lightbulb icon-medium light-icon"></i>
-                    <div class="value" id="light">%LIGHT% Lumen</div>
+                    <div class="value">%LIGHT% Lumen</div>
                     <span>LIGHT</span>
                 </div>
                 <div class="value-container temperature">
                     <i class="fa fa-thermometer-half icon-medium"></i>
-                    <div class="value" id="temperature">%TEMPERATURE% °C</div>
+                    <div class="value">%TEMPERATURE% °C</div>
                     <span>TEMPERATURE</span>
                 </div>
                 <div class="value-container min-max-temp">
                     <div class="min-temp">
                         <i class="fa fa-thermometer-empty icon-small cooler-icon"></i>
-                        <div class="value-small">%COOLER%</div>
+                        <div class="value-small">%COOLER% °C</div>
                     </div>
                     <div class="max-temp">
                         <i class="fa fa-thermometer-full icon-small heater-icon"></i>
-                        <div class="value-small">%HEATER%</div>
+                        <div class="value-small">%HEATER% °C</div>
                     </div>
                 </div>
             </div>
@@ -124,16 +184,16 @@
     </div>
 
     <script>
-        setInterval(function() {
+        setInterval(function () {
             var xhr = new XMLHttpRequest(); // Constructor
             // XMLHttpRequest changes between states as it progresses
-            xhr.onreadystatechange = function() { // Handler to track XMLHttp object state 
+            xhr.onreadystatechange = function () { // Handler to track XMLHttp object state 
                 // DONE = 4; when request complete and return OK (200)
                 if (this.readyState == 4 && this.status == 200) {
                     var r = this
                         .response //renvoie le texte reçu d'un serveur suite à l'envoi d'une requête.
-                        //console.log(r);
-                        // .innerHTML method is used to change the html contents of a DOM object
+                    //console.log(r);
+                    // .innerHTML method is used to change the html contents of a DOM object
                     document.getElementById("temperature").innerHTML = r; // temperature
                 }
             };
@@ -144,9 +204,9 @@
             xhr.send(); //This method opens the connection and sends the request to server.
         }, 1000);
 
-        setInterval(function() {
+        setInterval(function () {
             var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
+            xhr.onreadystatechange = function () {
                 if (this.readyState == 4 && this.status == 200) {
                     document.getElementById("light").innerHTML = this.responseText;
                 }
@@ -155,217 +215,6 @@
             xhr.send();
         }, 1000);
     </script>
-    <style>
-        html,
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0px auto;
-        }
-        /* h2 {
-    font-size: 3.0rem;
-}
-
-p {
-    font-size: 3.0rem;
-}
-
-.units {
-    font-size: 1.2rem;
-}
-
-.sensors-labels {
-    font-size: 1.5rem;
-    vertical-align: middle;
-    padding-bottom: 15px;
-}
-
-div {
-    max-width: 500px;
-    word-wrap: break-word;
-}
-
-.grid-container {
-    display: grid;
-    grid-template-columns: auto auto;
-    background-color: #2196F3;
-    padding: 10px;
-}
-
-.grid-item {
-    background-color: rgba(255, 255, 255, 0.8);
-    border: 1px solid rgba(0, 0, 0, 0.8);
-    padding: 20px;
-    font-size: 30px;
-    text-align: center;
-} */
-        
-        .main-container {
-            width: 100vw;
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            z-index: -1;
-        }
-        
-        .background-image {
-            position: absolute;
-            height: 70%;
-            width: 100%;
-            top: 0;
-            background-image: linear-gradient(rgba(0, 144, 55, 0.5), rgba(168, 255, 201, 0.5)), url("https://img.freepik.com/photos-gratuite/meuble-television-dans-salon-moderne-fauteuil-plante-mur-marbre-fonce-rendu-3d_41470-3512.jpg?t=st=1647548156~exp=1647548756~hmac=6757e8f8d189096a69fefeea04ea4a137462db74633731f0fa2be9f80bc6b19a&w=1800");
-            background-size: cover;
-            background-position: center;
-            filter: blur(2px);
-        }
-        
-        .panel-container {
-            height: 70%;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: whitesmoke;
-        }
-        
-        .panel-header-container {
-            width: 100%;
-            height: 20%;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1;
-        }
-        
-        .title {
-            margin-left: 36px;
-            font-size: 36px;
-        }
-        
-        .uptime-container {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            margin-right: 36px;
-            font-weight: 700;
-        }
-        
-        .panel-data-container {
-            height: 100%;
-            width: 100%;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 1;
-        }
-        
-        .value-container {
-            height: 50%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        
-        .min-temp,
-        .max-temp {
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            font-size: 20px;
-            margin-top: 10px;
-        }
-        
-        .panel-footer-container {
-            width: 100%;
-            height: 10%;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-around;
-            align-items: center;
-            z-index: 1;
-            margin-bottom: 16px;
-            font-weight: 700;
-        }
-        
-        .info-container {
-            height: 30%;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-        }
-        
-        .thresholds-container,
-        .form-container {
-            width: 50%;
-            margin-left: 20px;
-            height: 60%;
-        }
-        
-        .tresh-data,
-        .form-data-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            height: 100%;
-            margin-right: 20px;
-        }
-        
-        .tresh-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-        }
-        
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-        }
-        
-        .tresh-label {
-            align-self: center;
-            justify-self: left;
-        }
-        
-        .tresh-value {
-            align-self: center;
-            justify-self: center;
-        }
-        
-        i.icon-medium {
-            font-size: 50px;
-        }
-        
-        i.icon-small {
-            font-size: 30px;
-        }
-        
-        .value {
-            font-size: 25px;
-        }
-        
-        .value-small {
-            font-size: 22px;
-        }
-        
-        .light-icon {
-            color: rgb(255, 238, 0);
-        }
-        
-        .cooler-icon {
-            color: rgb(0, 204, 255);
-        }
-        
-        .heater-icon {
-            color: rgb(255, 84, 31);
-        }
-        
-        .cooler-icon,
-        .heater-icon {
-            margin-right: 10px;
-        }
-    </style>
 </body>
 
 </html>

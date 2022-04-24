@@ -1,0 +1,207 @@
+html, body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0px auto;
+}
+
+/* h2 {
+    font-size: 3.0rem;
+}
+
+p {
+    font-size: 3.0rem;
+}
+
+.units {
+    font-size: 1.2rem;
+}
+
+.sensors-labels {
+    font-size: 1.5rem;
+    vertical-align: middle;
+    padding-bottom: 15px;
+}
+
+div {
+    max-width: 500px;
+    word-wrap: break-word;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto;
+    background-color: #2196F3;
+    padding: 10px;
+}
+
+.grid-item {
+    background-color: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    font-size: 30px;
+    text-align: center;
+} */
+
+.main-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    z-index: -1;
+}
+
+.background-image {
+    position: absolute;
+    height: 70%;
+    width: 100%;
+    top: 0;
+    background-image: linear-gradient(rgba(0, 144, 55, 0.5), rgba(168, 255, 201, 0.5)),
+                  url("https://img.freepik.com/photos-gratuite/meuble-television-dans-salon-moderne-fauteuil-plante-mur-marbre-fonce-rendu-3d_41470-3512.jpg?t=st=1647548156~exp=1647548756~hmac=6757e8f8d189096a69fefeea04ea4a137462db74633731f0fa2be9f80bc6b19a&w=1800");
+    background-size: cover;
+    background-position: center;
+    filter: blur(2px);
+}
+
+.panel-container {
+    height: 70%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: whitesmoke;
+}
+
+.panel-header-container {
+    width: 100%;
+    height: 20%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 1;
+}
+
+.title {
+    margin-left: 36px;
+    font-size: 36px;
+}
+
+.uptime-container{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-right: 36px;
+    font-weight: 700;
+}
+
+.panel-data-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1;
+}
+
+.value-container {
+    height: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.min-temp, .max-temp {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-size: 20px;
+    margin-top: 10px;
+}
+
+.panel-footer-container {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    z-index: 1;
+    margin-bottom: 16px;
+    font-weight: 700;
+}
+
+.info-container {
+    height: 30%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.thresholds-container, .form-container {
+    width: 50%;
+    margin-left: 20px;
+    height: 60%;
+}
+
+.tresh-data, .form-data-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 100%;
+    margin-right: 20px;
+}
+
+.tresh-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.form-row  {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
+
+.tresh-label {
+    align-self: center;
+    justify-self: left;
+}
+
+.tresh-value {
+    align-self: center;
+    justify-self: center;
+}
+
+
+i.icon-medium {
+    font-size: 50px;
+}
+
+i.icon-small {
+    font-size: 30px;
+}
+
+.value {
+    font-size: 25px;
+}
+
+.value-small {
+    font-size: 22px;
+}
+
+.light-icon {
+    color: rgb(255, 238, 0);
+}
+
+.cooler-icon {
+    color: rgb(0, 204, 255);
+}
+
+.heater-icon {
+    color: rgb(255, 84, 31);
+}
+
+.cooler-icon, .heater-icon {
+    margin-right: 10px;
+}

@@ -1,0 +1,1 @@
+String readFileFromSPIFFS(String path);

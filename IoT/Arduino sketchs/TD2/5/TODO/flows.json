@@ -1,0 +1,300 @@
+[
+    {
+        "id": "2c3383e8b773b406",
+        "type": "tab",
+        "label": "Flow 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "0905cc5adeb32828",
+        "type": "function",
+        "z": "2c3383e8b773b406",
+        "name": "temperature()",
+        "func": "msg.payload=msg['payload']['temperature'];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 480,
+        "y": 120,
+        "wires": [
+            [
+                "d61363368f851d47",
+                "8b36654f7d947ede"
+            ]
+        ]
+    },
+    {
+        "id": "d61363368f851d47",
+        "type": "ui_gauge",
+        "z": "2c3383e8b773b406",
+        "name": "",
+        "group": "2b7ac01b.fc984",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Temperature",
+        "label": "degré ",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "40",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 710,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "0992ec3005a597c8",
+        "type": "debug",
+        "z": "2c3383e8b773b406",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 290,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "37b2809266a7a4de",
+        "type": "json",
+        "z": "2c3383e8b773b406",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 270,
+        "y": 180,
+        "wires": [
+            [
+                "0905cc5adeb32828",
+                "6cda23272b7e32af",
+                "c2ae8b6d26edda42"
+            ]
+        ]
+    },
+    {
+        "id": "c05c8a7f7607d99d",
+        "type": "http in",
+        "z": "2c3383e8b773b406",
+        "name": "",
+        "url": "/jauge",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 130,
+        "y": 240,
+        "wires": [
+            [
+                "37b2809266a7a4de",
+                "0992ec3005a597c8"
+            ]
+        ]
+    },
+    {
+        "id": "b35163e0e669baea",
+        "type": "ui_text",
+        "z": "2c3383e8b773b406",
+        "group": "2b7ac01b.fc984",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Ip_Address",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "x": 670,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "6cda23272b7e32af",
+        "type": "function",
+        "z": "2c3383e8b773b406",
+        "name": "light()",
+        "func": "msg.payload=msg['payload']['light'];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 470,
+        "y": 220,
+        "wires": [
+            [
+                "98000be539ce8826",
+                "89bd323719c1246d"
+            ]
+        ]
+    },
+    {
+        "id": "c2ae8b6d26edda42",
+        "type": "function",
+        "z": "2c3383e8b773b406",
+        "name": "ipaddress()",
+        "func": "msg.payload=msg['payload']['ipaddress'];\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 450,
+        "y": 40,
+        "wires": [
+            [
+                "b35163e0e669baea"
+            ]
+        ]
+    },
+    {
+        "id": "98000be539ce8826",
+        "type": "ui_gauge",
+        "z": "2c3383e8b773b406",
+        "name": "",
+        "group": "2b7ac01b.fc984",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Light",
+        "label": "lumen",
+        "format": "{{msg.payload}}",
+        "min": 0,
+        "max": "3000",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "className": "",
+        "x": 670,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "89bd323719c1246d",
+        "type": "ui_chart",
+        "z": "2c3383e8b773b406",
+        "name": "",
+        "group": "2b7ac01b.fc984",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "label": "Luminosité",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "0",
+        "ymax": "3000",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 670,
+        "y": 260,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8b36654f7d947ede",
+        "type": "ui_chart",
+        "z": "2c3383e8b773b406",
+        "name": "",
+        "group": "2b7ac01b.fc984",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "label": "Temperature",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "25",
+        "ymax": "30",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 710,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2b7ac01b.fc984",
+        "type": "ui_group",
+        "name": "Moniteur",
+        "tab": "99ab8dc5.f435c",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "99ab8dc5.f435c",
+        "type": "ui_tab",
+        "name": "HTTP",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    }
+]
